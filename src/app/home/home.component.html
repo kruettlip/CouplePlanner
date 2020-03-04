@@ -1,0 +1,19 @@
+<div class="wrapper"
+     fxLayout="row" fxLayoutAlign="space-between start"
+     fxLayoutGap.md="5% grid"
+     fxLayout.lt-md="column" fxLayoutAlign.lt-md="start start">
+  <div fxFlex="50">
+    <h1>Nächste Treffen</h1>
+    <div fxLayout="column" fxLayoutAlign="space-between start">
+      <mat-card *ngFor="let meeting of meetings" ngStyle.lt-md="width: 85%;">
+        <mat-card-title ngStyle.lt-sm="font-size: 120%;">{{meeting}}</mat-card-title>
+      </mat-card>
+    </div>
+  </div>
+  <div fxFlex="50">
+    <h1>Planung</h1>
+    <div fxLayout="row" fxLayoutAlign="start center">
+      <mat-calendar fxFlex="70" fxFlex.lt-md="90" #calendar></mat-calendar>
+    </div>
+  </div>
+</div>
