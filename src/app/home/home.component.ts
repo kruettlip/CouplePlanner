@@ -82,9 +82,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   private getDateString(data: Event) {
-    let dateString = `${data.startDate.toLocaleDateString('de')}`;
+    let dateString = `${data.startDate.toLocaleDateString('de', {year: 'numeric', month: 'long', day: 'numeric' })}`;
     if (data.startDate.getDay() === data.endDate.getDay()) {
-      dateString += ` - ${data.startDate.toLocaleDateString('de')}`;
+      dateString += ` - ${data.startDate.toLocaleDateString('de', {year: 'numeric', month: 'long', day: 'numeric' })}`;
     }
     const startTime = data.startDate.toLocaleTimeString('de', {hour: '2-digit', minute: '2-digit'});
     const endTime = data.endDate.toLocaleTimeString('de', {hour: '2-digit', minute: '2-digit'});
