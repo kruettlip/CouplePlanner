@@ -1,0 +1,19 @@
+<h1 mat-dialog-title>Treffen</h1>
+<div mat-dialog-content style="overflow: visible">
+  <div fxLayout="column" fxLayoutAlign="space-between start" style="width: 100%">
+    <div fxLayout="row" fxLayoutAlign="space-between start" style="width: 100%">
+      <span fxFlex="30"><b>Datum:</b></span>
+      <span fxFlex="70">{{data.dateString}}</span>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="space-between start" style="width: 100%">
+      <span fxFlex="30"><b>Ort:</b></span>
+      <span fxFlex="70">{{data.location}}</span>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="space-between start" style="width: 100%">
+      <span fxFlex="30"><b>Anreise:</b></span>
+      <span fxFlex="70">{{data.travel}}</span>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Close</button>
+</div>

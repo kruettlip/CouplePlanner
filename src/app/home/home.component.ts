@@ -1,5 +1,7 @@
 import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {MatCalendar} from '@angular/material';
+import {MatCalendar, MatDialog} from '@angular/material';
+import {EventModalComponent} from '../event-modal/event-modal.component';
+import {Event} from '../models/event';
 
 @Component({
   selector: 'app-home',
@@ -9,16 +11,42 @@ import {MatCalendar} from '@angular/material';
 export class HomeComponent implements OnInit, AfterViewInit {
 
   @ViewChild('calendar', {static: false}) calendar: MatCalendar<Date>;
-  meetings: string[] = [
-    '27. Februar 2020 (06:30 - 07:00)',
-    '27. Februar 2020 - 28. Februar 2020 (17:30 - 07:30)',
-    '28. Februar 2020 - 29. Februar 2020 (22:00 - 12:30)',
-    '1. März 2020 (10:00 - 22:00)' ];
+  events: Event[] = [
+    {
+      startDate: new Date(2020, 2, 27, 6, 30),
+      endDate: new Date(2020, 2, 27, 7, 0),
+      location: 'Meli',
+      travel: 'Zug',
+      dateString: ''
+    },
+    {
+      startDate: new Date(2020, 2, 27, 17, 30),
+      endDate: new Date(2020, 2, 28, 7, 30),
+      location: 'Phippu',
+      travel: 'Auto',
+      dateString: ''
+    },
+    {
+      startDate: new Date(2020, 2, 28, 22, 0),
+      endDate: new Date(2020, 2, 29, 12, 30),
+      location: 'Phippu',
+      travel: 'Zug',
+      dateString: ''
+    },
+    {
+      startDate: new Date(2020, 3, 1, 10, 0),
+      endDate: new Date(2020, 3, 1, 22, 0),
+      location: 'Meli',
+      travel: 'Auto',
+      dateString: ''
+    }
+    ];
 
-  constructor() {
+  constructor(private readonly dialog: MatDialog) {
   }
 
   ngOnInit() {
+    this.events.forEach(e => e.dateString = this.getDateString(e));
   }
 
   ngAfterViewInit(): void {
@@ -42,5 +70,25 @@ export class HomeComponent implements OnInit, AfterViewInit {
       selectedDate.classList.add('available');
     }
   }
-}
 
+  showMeeting(event: Event) {
+    const dialogRef = this.dialog.open(EventModalComponent, {
+      width: '30%',
+      data: event
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+    });
+  }
+
+  private getDateString(data: Event) {
+    let dateString = `${data.startDate.toLocaleDateString('de')}`;
+    if (data.startDate.getDay() === data.endDate.getDay()) {
+      dateString += ` - ${data.startDate.toLocaleDateString('de')}`;
+    }
+    const startTime = data.startDate.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+    const endTime = data.endDate.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+    dateString += ` (${startTime} - ${endTime})`;
+    return dateString;
+  }
+}

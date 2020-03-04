@@ -5,13 +5,23 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HomeComponent } from './home/home.component';
-import {MatCardModule, MatDatepickerModule, MatIconModule, MatNativeDateModule, MatToolbarModule} from '@angular/material';
+import {
+  MatButtonModule,
+  MatCardModule,
+  MatDatepickerModule,
+  MatDialogModule,
+  MatIconModule,
+  MatNativeDateModule,
+  MatToolbarModule
+} from '@angular/material';
 import {FlexLayoutModule} from '@angular/flex-layout';
+import { EventModalComponent } from './event-modal/event-modal.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent
+    HomeComponent,
+    EventModalComponent
   ],
   imports: [
     BrowserModule,
@@ -22,8 +32,11 @@ import {FlexLayoutModule} from '@angular/flex-layout';
     MatCardModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    MatButtonModule,
+    MatDialogModule
   ],
+  entryComponents: [EventModalComponent],
   providers: [],
   bootstrap: [AppComponent]
 })
