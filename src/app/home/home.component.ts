@@ -73,7 +73,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   showMeeting(event: Event) {
     const dialogRef = this.dialog.open(EventModalComponent, {
-      width: '30%',
+      width: '450px',
       data: event
     });
 
@@ -86,8 +86,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     if (data.startDate.getDay() === data.endDate.getDay()) {
       dateString += ` - ${data.startDate.toLocaleDateString('de')}`;
     }
-    const startTime = data.startDate.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
-    const endTime = data.endDate.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+    const startTime = data.startDate.toLocaleTimeString('de', {hour: '2-digit', minute: '2-digit'});
+    const endTime = data.endDate.toLocaleTimeString('de', {hour: '2-digit', minute: '2-digit'});
     dateString += ` (${startTime} - ${endTime})`;
     return dateString;
   }

@@ -4,8 +4,8 @@
      fxLayout.lt-md="column" fxLayoutAlign.lt-md="start start">
   <div fxFlex="50">
     <h1>Nächste Treffen</h1>
-    <div fxLayout="column" fxLayoutAlign="space-between start">
-      <mat-card *ngFor="let event of events" ngStyle.lt-md="width: 85%;" (click)="showMeeting(event)">
+    <div fxLayout="column" fxLayoutAlign="space-between start" style="width: 80%;">
+      <mat-card fxFill *ngFor="let event of events" ngStyle.lt-md="width: 85%;" (click)="showMeeting(event)">
         <mat-card-title ngStyle.lt-sm="font-size: 120%;">{{event.dateString}}</mat-card-title>
       </mat-card>
     </div>
