@@ -1,6 +1,9 @@
 :host::ng-deep mat-calendar .mat-calendar-body-cell-content {
   &.available {
     background-color: rgba(255, 236, 0, 0.33);
+    &:hover {
+      background-color: rgb(255, 236, 0) !important;
+    }
     &.planned {
       background-color: rgba(25, 150, 50, 0.5);
       &:hover {
@@ -10,6 +13,9 @@
   }
   &.not-available {
     background-color: rgba(255, 42, 86, 0.5);
+    &:hover {
+      background-color: rgb(255, 42, 86) !important;
+    }
   }
   &:hover {
     background-color: rgb(196, 196, 196) !important;

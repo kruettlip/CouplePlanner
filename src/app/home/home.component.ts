@@ -38,6 +38,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         selectedDate.classList.add('planned');
       }
     } else {
+      selectedDate.classList.remove('not-available');
       selectedDate.classList.add('available');
     }
   }
