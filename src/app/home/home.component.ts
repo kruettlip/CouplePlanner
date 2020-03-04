@@ -10,6 +10,9 @@ import {Event} from '../models/event';
 })
 export class HomeComponent implements OnInit, AfterViewInit {
 
+  constructor(private readonly dialog: MatDialog) {
+  }
+
   @ViewChild('calendar', {static: false}) calendar: MatCalendar<Date>;
   events: Event[] = [
     {
@@ -40,24 +43,20 @@ export class HomeComponent implements OnInit, AfterViewInit {
       travel: 'Auto',
       dateString: ''
     }
-    ];
+  ];
 
-  constructor(private readonly dialog: MatDialog) {
+  private static getDateString(data: Event) {
+    let dateString = `${data.startDate.toLocaleDateString('de', {year: 'numeric', month: 'long', day: 'numeric'})}`;
+    if (data.startDate.getDate() < data.endDate.getDate()) {
+      dateString += ` - ${data.endDate.toLocaleDateString('de', {year: 'numeric', month: 'long', day: 'numeric'})}`;
+    }
+    const startTime = data.startDate.toLocaleTimeString('de', {hour: '2-digit', minute: '2-digit'});
+    const endTime = data.endDate.toLocaleTimeString('de', {hour: '2-digit', minute: '2-digit'});
+    dateString += ` (${startTime} - ${endTime})`;
+    return dateString;
   }
 
-  ngOnInit() {
-    this.events.forEach(e => e.dateString = this.getDateString(e));
-  }
-
-  ngAfterViewInit(): void {
-    this.calendar.selectedChange.subscribe(s => {
-      const elements = document.querySelectorAll('.mat-calendar-body-cell-content');
-      const selectedDate = elements[s.getDate() - 1];
-      this.addCorrespondingClass(selectedDate);
-    });
-  }
-
-  private addCorrespondingClass(selectedDate: Element) {
+  private static addCorrespondingClass(selectedDate: Element) {
     if (selectedDate.classList.contains('available')) {
       if (selectedDate.classList.contains('planned')) {
         selectedDate.classList.remove('available', 'planned');
@@ -71,6 +70,26 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
   }
 
+  ngOnInit() {
+    this.events.forEach(e => e.dateString = HomeComponent.getDateString(e));
+    this.events.sort((a, b) => a.startDate > b.startDate ? 1 : a.startDate === b.startDate ? 0 : -1);
+  }
+
+  ngAfterViewInit(): void {
+    this.updateCalendar();
+    this.calendar.selectedChange.subscribe(s => {
+      const elements = document.querySelectorAll('.mat-calendar-body-cell-content');
+      const selectedDate = elements[s.getDate() - 1];
+      HomeComponent.addCorrespondingClass(selectedDate);
+    });
+    this.calendar.monthSelected.subscribe(m => {
+      this.updateCalendar();
+    });
+    this.calendar.stateChanges.subscribe(m => {
+      this.updateCalendar();
+    });
+  }
+
   showMeeting(event: Event) {
     const dialogRef = this.dialog.open(EventModalComponent, {
       width: event.dateString.length > 50 ? '600px' : event.dateString.length > 35 ? '550px' :
@@ -82,14 +101,19 @@ export class HomeComponent implements OnInit, AfterViewInit {
     });
   }
 
-  private getDateString(data: Event) {
-    let dateString = `${data.startDate.toLocaleDateString('de', {year: 'numeric', month: 'long', day: 'numeric' })}`;
-    if (data.startDate.getDay() === data.endDate.getDay()) {
-      dateString += ` - ${data.startDate.toLocaleDateString('de', {year: 'numeric', month: 'long', day: 'numeric' })}`;
-    }
-    const startTime = data.startDate.toLocaleTimeString('de', {hour: '2-digit', minute: '2-digit'});
-    const endTime = data.endDate.toLocaleTimeString('de', {hour: '2-digit', minute: '2-digit'});
-    dateString += ` (${startTime} - ${endTime})`;
-    return dateString;
+  private updateCalendar() {
+    setTimeout(() => {
+        const dateElements = document.querySelectorAll('.mat-calendar-body-cell-content');
+        const month = this.calendar.activeDate.getMonth();
+        const year = this.calendar.activeDate.getFullYear();
+        dateElements.forEach(d => {
+          const calendarDate = new Date(year, month, (d.innerHTML as unknown) as number).toDateString();
+          const isDatePlanned = this.events.filter(e => e.startDate.toDateString() === calendarDate ||
+            e.endDate.toDateString() === calendarDate).length > 0;
+          if (isDatePlanned) {
+            dateElements[(d.innerHTML as unknown) as number - 1].classList.add('available', 'planned');
+          }
+        });
+      }, 1);
   }
 }
