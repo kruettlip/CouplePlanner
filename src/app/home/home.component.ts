@@ -13,8 +13,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   @ViewChild('calendar', {static: false}) calendar: MatCalendar<Date>;
   events: Event[] = [
     {
-      startDate: new Date(2020, 2, 27, 6, 30),
-      endDate: new Date(2020, 2, 27, 7, 0),
+      startDate: new Date(2020, 3, 27, 6, 30),
+      endDate: new Date(2020, 3, 27, 7, 0),
       location: 'Meli',
       travel: 'Zug',
       dateString: ''
@@ -73,7 +73,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   showMeeting(event: Event) {
     const dialogRef = this.dialog.open(EventModalComponent, {
-      width: '450px',
+      width: event.dateString.length > 50 ? '600px' : event.dateString.length > 35 ? '550px' :
+        event.dateString.length > 30 ? '400px' : '300px',
       data: event
     });
 
