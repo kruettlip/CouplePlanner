@@ -15,7 +15,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   constructor(private readonly dialog: MatDialog) {
   }
 
-  @ViewChild('calendar', {static: false}) calendar: MatCalendar<Date>;
+  @ViewChild('calendar') calendar: MatCalendar<Date>;
   events: Event[] = [
     {
       startDate: new Date(2020, 3, 27, 6, 30),
