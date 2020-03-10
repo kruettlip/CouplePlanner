@@ -17,6 +17,7 @@ import {
 import {FlexLayoutModule} from '@angular/flex-layout';
 import { EventModalComponent } from './event-modal/event-modal.component';
 import { PlanningModalComponent } from './planning-modal/planning-modal.component';
+import {FormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { PlanningModalComponent } from './planning-modal/planning-modal.componen
     MatDialogModule,
     MatButtonToggleModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    FormsModule
   ],
   entryComponents: [EventModalComponent, PlanningModalComponent],
   providers: [],

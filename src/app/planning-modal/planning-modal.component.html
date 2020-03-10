@@ -12,23 +12,23 @@
     <form fxLayout="column" fxLayoutAlign="space-between start">
       <mat-form-field fxFill>
         <mat-label>Von</mat-label>
-        <input matInput [matDatepicker]="datepickerStartdate">
+        <input matInput [matDatepicker]="datepickerStartdate" name="startDate" [(ngModel)]="event.startDate">
         <mat-datepicker-toggle matSuffix [for]="datepickerStartdate"></mat-datepicker-toggle>
         <mat-datepicker #datepickerStartdate></mat-datepicker>
       </mat-form-field>
       <mat-form-field fxFill>
         <mat-label>Bis</mat-label>
-        <input matInput [matDatepicker]="datepickerEnddate">
+        <input matInput [matDatepicker]="datepickerEnddate" name="endDate" [(ngModel)]="event.endDate">
         <mat-datepicker-toggle matSuffix [for]="datepickerEnddate"></mat-datepicker-toggle>
         <mat-datepicker #datepickerEnddate></mat-datepicker>
       </mat-form-field>
       <mat-form-field fxFill>
         <mat-label>Ort</mat-label>
-        <input matInput>
+        <input matInput name="location" [(ngModel)]="event.location">
       </mat-form-field>
       <mat-form-field fxFill>
         <mat-label>Anreise</mat-label>
-        <input matInput>
+        <input matInput name="travel" [(ngModel)]="event.travel">
       </mat-form-field>
     </form>
   </div>
@@ -36,19 +36,19 @@
     <form fxLayout="column" fxLayoutAlign="space-between start">
       <mat-form-field fxFill>
         <mat-label>Von</mat-label>
-        <input matInput [matDatepicker]="datepickerStartdate">
+        <input matInput [matDatepicker]="datepickerStartdate" name="startDate" [(ngModel)]="absence.startDate">
         <mat-datepicker-toggle matSuffix [for]="datepickerStartdate"></mat-datepicker-toggle>
         <mat-datepicker #datepickerStartdate></mat-datepicker>
       </mat-form-field>
       <mat-form-field fxFill>
         <mat-label>Bis</mat-label>
-        <input matInput [matDatepicker]="datepickerEnddate">
+        <input matInput [matDatepicker]="datepickerEnddate" name="endDate" [(ngModel)]="absence.endDate">
         <mat-datepicker-toggle matSuffix [for]="datepickerEnddate"></mat-datepicker-toggle>
         <mat-datepicker #datepickerEnddate></mat-datepicker>
       </mat-form-field>
       <mat-form-field fxFill>
         <mat-label>Abwesenheitsgrund</mat-label>
-        <input matInput>
+        <input matInput name="absenceReason" [(ngModel)]="absence.absenceReason">
       </mat-form-field>
     </form>
   </div>

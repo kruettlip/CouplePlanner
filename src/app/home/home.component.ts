@@ -3,6 +3,7 @@ import {MatCalendar, MatDialog} from '@angular/material';
 import {EventModalComponent} from '../event-modal/event-modal.component';
 import {Event} from '../models/event';
 import {PlanningModalComponent} from '../planning-modal/planning-modal.component';
+import {Absence} from '../models/absence';
 
 @Component({
   selector: 'app-home',
@@ -45,6 +46,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
       dateString: ''
     }
   ];
+  absences: Absence[] = [];
 
   private static getDateString(data: Event) {
     let dateString = `${data.startDate.toLocaleDateString('de', {year: 'numeric', month: 'long', day: 'numeric'})}`;
@@ -57,30 +59,35 @@ export class HomeComponent implements OnInit, AfterViewInit {
     return dateString;
   }
 
-  private addCorrespondingClass(selectedDate: Element) {
+  private addCorrespondingClass(date: Date, selectedDateElement: Element) {
     const dialogRef = this.dialog.open(PlanningModalComponent, {
       width: '400px',
-      data: null
+      data: {date}
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      if (result instanceof Event) {
+        this.events.push(result as Event);
+        this.refreshEvents();
+      } else if (result instanceof Absence) {
+        this.absences.push(result as Absence);
+      }
     });
-    if (selectedDate.classList.contains('available')) {
-      if (selectedDate.classList.contains('planned')) {
-        selectedDate.classList.remove('available', 'planned');
-        selectedDate.classList.add('not-available');
+    if (selectedDateElement.classList.contains('available')) {
+      if (selectedDateElement.classList.contains('planned')) {
+        selectedDateElement.classList.remove('available', 'planned');
+        selectedDateElement.classList.add('not-available');
       } else {
-        selectedDate.classList.add('planned');
+        selectedDateElement.classList.add('planned');
       }
     } else {
-      selectedDate.classList.remove('not-available');
-      selectedDate.classList.add('available');
+      selectedDateElement.classList.remove('not-available');
+      selectedDateElement.classList.add('available');
     }
   }
 
   ngOnInit() {
-    this.events.forEach(e => e.dateString = HomeComponent.getDateString(e));
-    this.events.sort((a, b) => a.startDate > b.startDate ? 1 : a.startDate === b.startDate ? 0 : -1);
+    this.refreshEvents();
   }
 
   ngAfterViewInit(): void {
@@ -88,7 +95,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.calendar.selectedChange.subscribe(s => {
       const elements = document.querySelectorAll('.mat-calendar-body-cell-content');
       const selectedDate = elements[s.getDate() - 1];
-      this.addCorrespondingClass(selectedDate);
+      this.addCorrespondingClass(s, selectedDate);
     });
     this.calendar.monthSelected.subscribe(m => {
       this.updateCalendar();
@@ -96,6 +103,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.calendar.stateChanges.subscribe(m => {
       this.updateCalendar();
     });
+  }
+
+  refreshEvents() {
+    this.events.forEach(e => e.dateString = HomeComponent.getDateString(e));
+    this.events.sort((a, b) => a.startDate > b.startDate ? 1 : a.startDate === b.startDate ? 0 : -1);
   }
 
   showMeeting(event: Event) {
