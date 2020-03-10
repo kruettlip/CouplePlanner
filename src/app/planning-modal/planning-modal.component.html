@@ -12,15 +12,16 @@
     <form fxLayout="column" fxLayoutAlign="space-between start">
       <mat-form-field fxFill>
         <mat-label>Von</mat-label>
-        <input matInput [matDatepicker]="datepickerStartdate" name="startDate" [(ngModel)]="event.startDate">
-        <mat-datepicker-toggle matSuffix [for]="datepickerStartdate"></mat-datepicker-toggle>
-        <mat-datepicker #datepickerStartdate></mat-datepicker>
+        <mat-datetimepicker-toggle [for]="datepickerStartdate" matSuffix></mat-datetimepicker-toggle>
+        <mat-datetimepicker #datepickerStartdate type="datetime" openOnFocus="true"
+                            timeInterval="5"></mat-datetimepicker>
+        <input matInput [matDatetimepicker]="datepickerStartdate" name="startDateTime" [(ngModel)]="event.startDate">
       </mat-form-field>
       <mat-form-field fxFill>
         <mat-label>Bis</mat-label>
-        <input matInput [matDatepicker]="datepickerEnddate" name="endDate" [(ngModel)]="event.endDate">
-        <mat-datepicker-toggle matSuffix [for]="datepickerEnddate"></mat-datepicker-toggle>
-        <mat-datepicker #datepickerEnddate></mat-datepicker>
+        <mat-datetimepicker-toggle [for]="datepickerEnddate" matSuffix></mat-datetimepicker-toggle>
+        <mat-datetimepicker #datepickerEnddate type="datetime" openOnFocus="true" timeInterval="5"></mat-datetimepicker>
+        <input matInput [matDatetimepicker]="datepickerEnddate" name="endDateTime" [(ngModel)]="event.endDate">
       </mat-form-field>
       <mat-form-field fxFill>
         <mat-label>Ort</mat-label>
@@ -36,15 +37,19 @@
     <form fxLayout="column" fxLayoutAlign="space-between start">
       <mat-form-field fxFill>
         <mat-label>Von</mat-label>
-        <input matInput [matDatepicker]="datepickerStartdate" name="startDate" [(ngModel)]="absence.startDate">
-        <mat-datepicker-toggle matSuffix [for]="datepickerStartdate"></mat-datepicker-toggle>
-        <mat-datepicker #datepickerStartdate></mat-datepicker>
+        <mat-datetimepicker-toggle [for]="datepickerAbsenceStartdate" matSuffix></mat-datetimepicker-toggle>
+        <mat-datetimepicker #datepickerAbsenceStartdate type="datetime" openOnFocus="true"
+                            timeInterval="5"></mat-datetimepicker>
+        <input matInput [matDatetimepicker]="datepickerAbsenceStartdate" name="absenceStartDateTime"
+               [(ngModel)]="absence.startDate">
       </mat-form-field>
       <mat-form-field fxFill>
         <mat-label>Bis</mat-label>
-        <input matInput [matDatepicker]="datepickerEnddate" name="endDate" [(ngModel)]="absence.endDate">
-        <mat-datepicker-toggle matSuffix [for]="datepickerEnddate"></mat-datepicker-toggle>
-        <mat-datepicker #datepickerEnddate></mat-datepicker>
+        <mat-datetimepicker-toggle [for]="datepickerAbsenceEnddate" matSuffix></mat-datetimepicker-toggle>
+        <mat-datetimepicker #datepickerAbsenceEnddate type="datetime" openOnFocus="true"
+                            timeInterval="5"></mat-datetimepicker>
+        <input matInput [matDatetimepicker]="datepickerAbsenceEnddate" name="absenceEndDateTime"
+               [(ngModel)]="absence.endDate">
       </mat-form-field>
       <mat-form-field fxFill>
         <mat-label>Abwesenheitsgrund</mat-label>

@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, Inject, OnInit, ViewEncapsulation} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {Event} from '../models/event';
 import {Absence} from '../models/absence';
@@ -6,7 +6,8 @@ import {Absence} from '../models/absence';
 @Component({
   selector: 'app-planning-modal',
   templateUrl: './planning-modal.component.html',
-  styleUrls: ['./planning-modal.component.scss']
+  styleUrls: ['./planning-modal.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class PlanningModalComponent implements OnInit {
   isEvent = true;
