@@ -1,0 +1,59 @@
+<h1 mat-dialog-title>Planen</h1>
+<div mat-dialog-content style="overflow: visible">
+  <mat-button-toggle-group>
+    <mat-button-toggle value="event" (click)="setType(true)" checked>
+      Event
+    </mat-button-toggle>
+    <mat-button-toggle value="absence" (click)="setType(false)">
+      Abwesenheit
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+  <div *ngIf="isEvent" style="width: 100%; padding-top: 10px;">
+    <form fxLayout="column" fxLayoutAlign="space-between start">
+      <mat-form-field fxFill>
+        <mat-label>Von</mat-label>
+        <input matInput [matDatepicker]="datepickerStartdate">
+        <mat-datepicker-toggle matSuffix [for]="datepickerStartdate"></mat-datepicker-toggle>
+        <mat-datepicker #datepickerStartdate></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field fxFill>
+        <mat-label>Bis</mat-label>
+        <input matInput [matDatepicker]="datepickerEnddate">
+        <mat-datepicker-toggle matSuffix [for]="datepickerEnddate"></mat-datepicker-toggle>
+        <mat-datepicker #datepickerEnddate></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field fxFill>
+        <mat-label>Ort</mat-label>
+        <input matInput>
+      </mat-form-field>
+      <mat-form-field fxFill>
+        <mat-label>Anreise</mat-label>
+        <input matInput>
+      </mat-form-field>
+    </form>
+  </div>
+  <div *ngIf="!isEvent" style="width: 100%; padding-top: 10px;">
+    <form fxLayout="column" fxLayoutAlign="space-between start">
+      <mat-form-field fxFill>
+        <mat-label>Von</mat-label>
+        <input matInput [matDatepicker]="datepickerStartdate">
+        <mat-datepicker-toggle matSuffix [for]="datepickerStartdate"></mat-datepicker-toggle>
+        <mat-datepicker #datepickerStartdate></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field fxFill>
+        <mat-label>Bis</mat-label>
+        <input matInput [matDatepicker]="datepickerEnddate">
+        <mat-datepicker-toggle matSuffix [for]="datepickerEnddate"></mat-datepicker-toggle>
+        <mat-datepicker #datepickerEnddate></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field fxFill>
+        <mat-label>Abwesenheitsgrund</mat-label>
+        <input matInput>
+      </mat-form-field>
+    </form>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-raised-button (click)="onNoClick()">Close</button>
+    <button mat-raised-button color="primary" (click)="onSaveClick()">Save</button>
+  </div>
+</div>

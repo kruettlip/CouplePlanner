@@ -2,6 +2,7 @@ import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/
 import {MatCalendar, MatDialog} from '@angular/material';
 import {EventModalComponent} from '../event-modal/event-modal.component';
 import {Event} from '../models/event';
+import {PlanningModalComponent} from '../planning-modal/planning-modal.component';
 
 @Component({
   selector: 'app-home',
@@ -56,7 +57,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
     return dateString;
   }
 
-  private static addCorrespondingClass(selectedDate: Element) {
+  private addCorrespondingClass(selectedDate: Element) {
+    const dialogRef = this.dialog.open(PlanningModalComponent, {
+      width: '400px',
+      data: null
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+    });
     if (selectedDate.classList.contains('available')) {
       if (selectedDate.classList.contains('planned')) {
         selectedDate.classList.remove('available', 'planned');
@@ -80,7 +88,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.calendar.selectedChange.subscribe(s => {
       const elements = document.querySelectorAll('.mat-calendar-body-cell-content');
       const selectedDate = elements[s.getDate() - 1];
-      HomeComponent.addCorrespondingClass(selectedDate);
+      this.addCorrespondingClass(selectedDate);
     });
     this.calendar.monthSelected.subscribe(m => {
       this.updateCalendar();
