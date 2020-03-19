@@ -4,6 +4,7 @@ import {EventModalComponent} from '../event-modal/event-modal.component';
 import {Event} from '../models/event';
 import {PlanningModalComponent} from '../planning-modal/planning-modal.component';
 import {Absence} from '../models/absence';
+import { EventService } from '../shared/event.service';
 
 @Component({
   selector: 'app-home',
@@ -12,7 +13,8 @@ import {Absence} from '../models/absence';
 })
 export class HomeComponent implements OnInit, AfterViewInit {
 
-  constructor(private readonly dialog: MatDialog) {
+  constructor(private readonly dialog: MatDialog,
+              private readonly eventService: EventService) {
   }
 
   @ViewChild('calendar') calendar: MatCalendar<Date>;
@@ -49,6 +51,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   absences: Absence[] = [];
 
   private static getDateString(data: Event) {
+    data.startDate = new Date(data.startDate);
+    data.endDate = new Date(data.endDate);
     let dateString = `${data.startDate.toLocaleDateString('de', {year: 'numeric', month: 'long', day: 'numeric'})}`;
     if (data.startDate.getDate() < data.endDate.getDate()) {
       dateString += ` - ${data.endDate.toLocaleDateString('de', {year: 'numeric', month: 'long', day: 'numeric'})}`;
@@ -106,14 +110,18 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   refreshEvents() {
-    this.events.forEach(e => e.dateString = HomeComponent.getDateString(e));
-    this.events.sort((a, b) => a.startDate > b.startDate ? 1 : a.startDate === b.startDate ? 0 : -1);
+    this.eventService.getAll().subscribe((events) => {
+      this.events = events;
+      this.events.forEach(e => e.dateString = HomeComponent.getDateString(e));
+      this.events.sort((a, b) => a.startDate > b.startDate ? 1 : a.startDate === b.startDate ? 0 : -1);
+      this.updateCalendar();
+    });
   }
 
   showMeeting(event: Event) {
     const dialogRef = this.dialog.open(EventModalComponent, {
       width: event.dateString.length > 50 ? '600px' : event.dateString.length > 35 ? '550px' :
-        event.dateString.length > 30 ? '400px' : '300px',
+        event.dateString.length > 20 ? '400px' : '300px',
       data: event
     });
 
@@ -130,8 +138,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
           const calendarDate = new Date(year, month, (d.innerHTML as unknown) as number).toDateString();
           const isDatePlanned = this.events.filter(e => e.startDate.toDateString() === calendarDate ||
             e.endDate.toDateString() === calendarDate).length > 0;
+          const dateElement = dateElements[(d.innerHTML as unknown) as number - 1];
+          dateElement.classList.remove('available', 'not-available', 'planned');
+          dateElement.classList.add('available');
           if (isDatePlanned) {
-            dateElements[(d.innerHTML as unknown) as number - 1].classList.add('available', 'planned');
+            dateElement.classList.add('planned');
           }
         });
       }, 1);

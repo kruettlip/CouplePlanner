@@ -24,6 +24,7 @@ import {PlanningModalComponent} from './planning-modal/planning-modal.component'
 import {FormsModule} from '@angular/forms';
 import {MatDatetimepickerModule, MatNativeDatetimeModule} from '@mat-datetimepicker/core';
 import {MatMomentDateModule} from '@angular/material-moment-adapter';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -36,13 +37,13 @@ import {MatMomentDateModule} from '@angular/material-moment-adapter';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    SharedModule,
     MatToolbarModule,
     MatIconModule,
     MatCardModule,
     MatDatepickerModule,
     MatNativeDateModule,
     MatNativeDatetimeModule,
-    // MatMomentDateModule,
     MatDatetimepickerModule,
     FlexLayoutModule,
     MatButtonModule,
