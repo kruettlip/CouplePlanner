@@ -19,8 +19,6 @@ namespace kruettlip.OpenApi2JsonSchema
         if (openApiProperty == null) continue;
         property.Maximum = openApiProperty.Maximum;
         property.Minimum = openApiProperty.Minimum;
-        property.ExclusiveMaximum = Convert.ToDecimal(openApiProperty.ExclusiveMaximum);
-        property.ExclusiveMinimum = Convert.ToDecimal(openApiProperty.ExclusiveMinimum);
         property.Format = openApiProperty.Format;
         property.IsNullableRaw = openApiProperty.Nullable;
         property.MaxLength = openApiProperty.MaxLength;
