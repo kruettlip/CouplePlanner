@@ -1,65 +1,58 @@
-using FluentValidation;
+using System;
+using CouplePlanner.Presentation.Entities;
+using CouplePlanner.Presentation.Schema;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CouplePlanner.Presentation.Controllers
 {
-    /// <summary>
-    /// Manage events that the couple plans together
-    /// </summary>
-    [Route("api/[controller]")]
-    [ApiController]
-    public class EventsController : ControllerBase
-    {
-      /// <summary>
-      /// Is just here for testing a get-method
-      /// </summary>
-      /// <returns>"Hello World"</returns>
-      [HttpGet]
-      public ActionResult<string> Test()
-      {
-        return Ok("Hello World");
-      }
+  /// <summary>
+  /// Manage events that the couple plans together
+  /// </summary>
+  [Route("api/[controller]")]
+  [ApiController]
+  public class EventsController : ControllerBase
+  {
+    public ISchemaProvider SchemaProvider { get; set; }
 
-      /// <summary>
-      /// Is just here for testing a post-method
-      /// </summary>
-      /// <param name="myObject">The object that will be validated</param>
-      /// <returns>The passed object, if validation passes</returns>
-      [HttpPost]
-      public IActionResult TestPost(MyObject myObject)
-      {
-        return Ok(myObject);
-      }
+    public EventsController(ISchemaProvider schemaProvider)
+    {
+      SchemaProvider = schemaProvider;
     }
 
     /// <summary>
-    /// Own class for testing purposes
+    /// Is just here for testing a get-method
     /// </summary>
-    public class MyObject
+    /// <returns>"Hello World"</returns>
+    [HttpGet]
+    public ActionResult<string> Test()
     {
-      /// <summary>
-      /// The name of the object
-      /// </summary>
-      public string Name { get; set; }
+      return Ok("Hello World");
+    }
 
-      /// <summary>
-      /// The content, for example a message
-      /// </summary>
-      public string Content { get; set; }
+    [HttpGet("schema")]
+    public ActionResult<string> GetSchema()
+    {
+      try
+      {
+        var schema = SchemaProvider.GetSchema<MyObject>();
+
+        return Ok(schema.ToJson());
+      }
+      catch (Exception e)
+      {
+        return BadRequest(e);
+      }
     }
 
     /// <summary>
-    /// Validator for MyObject
+    /// Is just here for testing a post-method
     /// </summary>
-    public class MyObjectValidator : AbstractValidator<MyObject>
+    /// <param name="myObject">The object that will be validated</param>
+    /// <returns>The passed object, if validation passes</returns>
+    [HttpPost]
+    public IActionResult TestPost(MyObject myObject)
     {
-      /// <summary>
-      /// Constructor for validator
-      /// </summary>
-      public MyObjectValidator()
-      {
-        RuleFor(o => o.Name).MinimumLength(5).WithMessage("Name must be at least 5 characters long.");
-        RuleFor(o => o.Content).Must(c => c.StartsWith("#")).Must(c => c.EndsWith("#"));
-      }
+      return Ok(myObject);
     }
+  }
 }
