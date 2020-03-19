@@ -1,9 +1,9 @@
 using System;
 using System.IO;
 using System.Reflection;
-using CouplePlanner.Presentation.Schema;
-using FluentValidation.AspNetCore;
-using kruettlip.OpenApi2JsonSchema;
+using CouplePlanner.Application;
+using CouplePlanner.Infrastructure;
+using CouplePlanner.Infrastructure.Database;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -26,10 +26,10 @@ namespace CouplePlanner.Presentation
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
-      services.AddTransient<IJsonSchemaGenerator, JsonSchemaGenerator>();
-      services.AddTransient<ISchemaProvider, SchemaProvider>();
+      services.AddApplication();
+      services.AddInfrastructure();
 
-      services.AddControllers().AddFluentValidation(o => { o.RegisterValidatorsFromAssemblyContaining<Startup>(); });
+      services.AddControllers().AddApplication();
 
       services.AddSwaggerGen(c =>
       {
@@ -42,8 +42,10 @@ namespace CouplePlanner.Presentation
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env, CouplePlannerDbContext context)
     {
+      context.Database.EnsureCreated();
+
       if (File.Exists("swagger.json"))
         File.Delete("swagger.json");
       app.UseSwagger();
@@ -53,10 +55,22 @@ namespace CouplePlanner.Presentation
         app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "CouplePlanner.Server v1"); });
       }
 
+      app.Use(async (context, next) =>
+      {
+        await next();
+        var path = context.Request.Path.Value;
+        if (context.Response.StatusCode == 404 &&
+            !path.StartsWith("/api/"))
+        {
+          context.Request.Path = "/index.html";
+          await next();
+        }
+      });
+      app.UseStaticFiles();
+      app.UseDefaultFiles();
+
       app.UseRouting();
-
       app.UseAuthorization();
-
       app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
     }
   }

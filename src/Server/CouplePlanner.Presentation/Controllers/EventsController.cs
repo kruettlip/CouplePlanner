@@ -1,6 +1,8 @@
 using System;
-using CouplePlanner.Presentation.Entities;
-using CouplePlanner.Presentation.Schema;
+using System.Collections.Generic;
+using CouplePlanner.Application.Entities;
+using CouplePlanner.Application.Interfaces.Services;
+using CouplePlanner.Application.Schema;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CouplePlanner.Presentation.Controllers
@@ -14,45 +16,48 @@ namespace CouplePlanner.Presentation.Controllers
   {
     public ISchemaProvider SchemaProvider { get; set; }
 
-    public EventsController(ISchemaProvider schemaProvider)
+    public IEventApplicationService EventApplicationService { get; set; }
+
+    public EventsController(ISchemaProvider schemaProvider, IEventApplicationService eventApplicationService)
     {
       SchemaProvider = schemaProvider;
+      EventApplicationService = eventApplicationService;
     }
 
     /// <summary>
-    /// Is just here for testing a get-method
+    /// Returns all events
     /// </summary>
-    /// <returns>"Hello World"</returns>
+    /// <returns>List of Events</returns>
     [HttpGet]
-    public ActionResult<string> Test()
+    public ActionResult<IEnumerable<Event>> GetAll()
     {
-      return Ok("Hello World");
+      try
+      {
+        return Ok(EventApplicationService.GetAll());
+      }
+      catch (Exception)
+      {
+        return BadRequest();
+      }
     }
 
+    /// <summary>
+    /// Get the JSON-Schema of the event-entity
+    /// </summary>
+    /// <returns>JSON-Schema</returns>
     [HttpGet("schema")]
     public ActionResult<string> GetSchema()
     {
       try
       {
-        var schema = SchemaProvider.GetSchema<MyObject>();
+        var schema = SchemaProvider.GetSchema<Event>();
 
-        return Ok(schema.ToJson());
+        return Ok(schema);
       }
       catch (Exception e)
       {
         return BadRequest(e);
       }
-    }
-
-    /// <summary>
-    /// Is just here for testing a post-method
-    /// </summary>
-    /// <param name="myObject">The object that will be validated</param>
-    /// <returns>The passed object, if validation passes</returns>
-    [HttpPost]
-    public IActionResult TestPost(MyObject myObject)
-    {
-      return Ok(myObject);
     }
   }
 }
