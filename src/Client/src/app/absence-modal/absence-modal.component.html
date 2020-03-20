@@ -1,0 +1,21 @@
+<h1 mat-dialog-title>Abwesenheit</h1>
+<div mat-dialog-content style="overflow: visible">
+  <div fxLayout="column" fxLayoutAlign="space-between start" style="width: 100%">
+    <div fxLayout="row" fxLayoutAlign="space-between start" style="width: 100%">
+      <span fxFlex="25"><b>Datum:</b></span>
+      <span fxFlex="75">{{data.dateString}}</span>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="space-between start" style="width: 100%">
+      <span fxFlex="25"><b>Grund:</b></span>
+      <span fxFlex="75">{{data.absenceReason}}</span>
+    </div>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button (click)="onNoClick()" mat-raised-button style="background-color: lightgray;">Schliessen</button>
+  <button (click)="onDeleteClick()" color="primary" mat-raised-button>
+    <span>
+      <mat-icon fontIcon="fa-trash" fontSet="fontawesome"></mat-icon>Löschen
+    </span>
+  </button>
+</div>

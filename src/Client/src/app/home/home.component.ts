@@ -1,60 +1,40 @@
-import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {MatCalendar, MatDialog} from '@angular/material';
-import {EventModalComponent} from '../event-modal/event-modal.component';
-import {Event} from '../models/event';
-import {PlanningModalComponent} from '../planning-modal/planning-modal.component';
-import {Absence} from '../models/absence';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { MatCalendar, MatDialog } from '@angular/material';
+import { EventModalComponent } from '../event-modal/event-modal.component';
+import { Event } from '../models/event';
+import { PlanningModalComponent } from '../planning-modal/planning-modal.component';
+import { Absence } from '../models/absence';
 import { EventService } from '../shared/event.service';
+import { AbsenceService } from '../shared/absence.service';
+import { AbsenceModalComponent } from '../absence-modal/absence-modal.component';
+
+const CLASS_AVAILABLE = 'available';
+const CLASS_NOT_AVAILABLE = 'not-available';
+const CLASS_PLANNED = 'planned';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit, AfterViewInit {
-
-  constructor(private readonly dialog: MatDialog,
-              private readonly eventService: EventService) {
-  }
+export class HomeComponent implements AfterViewInit {
 
   @ViewChild('calendar') calendar: MatCalendar<Date>;
-  events: Event[] = [
-    {
-      startDate: new Date(2020, 3, 27, 6, 30),
-      endDate: new Date(2020, 3, 27, 7, 0),
-      location: 'Meli',
-      travel: 'Zug',
-      dateString: ''
-    },
-    {
-      startDate: new Date(2020, 2, 27, 17, 30),
-      endDate: new Date(2020, 2, 28, 7, 30),
-      location: 'Phippu',
-      travel: 'Auto',
-      dateString: ''
-    },
-    {
-      startDate: new Date(2020, 2, 28, 22, 0),
-      endDate: new Date(2020, 2, 29, 12, 30),
-      location: 'Phippu',
-      travel: 'Zug',
-      dateString: ''
-    },
-    {
-      startDate: new Date(2020, 3, 1, 10, 0),
-      endDate: new Date(2020, 3, 1, 22, 0),
-      location: 'Meli',
-      travel: 'Auto',
-      dateString: ''
-    }
-  ];
+  events: Event[] = [];
   absences: Absence[] = [];
 
-  private static getDateString(data: Event) {
+  constructor(private readonly dialog: MatDialog,
+              private readonly eventService: EventService,
+              private readonly absenceService: AbsenceService) {
+  }
+
+  private static getDateString(data: Event | Absence) {
     data.startDate = new Date(data.startDate);
     data.endDate = new Date(data.endDate);
     let dateString = `${data.startDate.toLocaleDateString('de', {year: 'numeric', month: 'long', day: 'numeric'})}`;
-    if (data.startDate.getDate() < data.endDate.getDate()) {
+    const startDateWithoutTime = new Date(data.startDate.getFullYear(), data.startDate.getMonth(), data.startDate.getDay());
+    const endDateWithoutTime = new Date(data.endDate.getFullYear(), data.endDate.getMonth(), data.endDate.getDay());
+    if (startDateWithoutTime < endDateWithoutTime) {
       dateString += ` - ${data.endDate.toLocaleDateString('de', {year: 'numeric', month: 'long', day: 'numeric'})}`;
     }
     const startTime = data.startDate.toLocaleTimeString('de', {hour: '2-digit', minute: '2-digit'});
@@ -63,57 +43,46 @@ export class HomeComponent implements OnInit, AfterViewInit {
     return dateString;
   }
 
-  private addCorrespondingClass(date: Date, selectedDateElement: Element) {
-    const dialogRef = this.dialog.open(PlanningModalComponent, {
-      width: '400px',
-      data: {date}
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result instanceof Event) {
-        this.events.push(result as Event);
-        this.refreshEvents();
-      } else if (result instanceof Absence) {
-        this.absences.push(result as Absence);
-      }
-    });
-    if (selectedDateElement.classList.contains('available')) {
-      if (selectedDateElement.classList.contains('planned')) {
-        selectedDateElement.classList.remove('available', 'planned');
-        selectedDateElement.classList.add('not-available');
-      } else {
-        selectedDateElement.classList.add('planned');
-      }
-    } else {
-      selectedDateElement.classList.remove('not-available');
-      selectedDateElement.classList.add('available');
-    }
-  }
-
-  ngOnInit() {
-    this.refreshEvents();
-  }
-
   ngAfterViewInit(): void {
-    this.updateCalendar();
+    this.refresh();
     this.calendar.selectedChange.subscribe(s => {
-      const elements = document.querySelectorAll('.mat-calendar-body-cell-content');
-      const selectedDate = elements[s.getDate() - 1];
-      this.addCorrespondingClass(s, selectedDate);
+      this.planEventOrAbsence(s);
     });
-    this.calendar.monthSelected.subscribe(m => {
+    this.calendar.monthSelected.subscribe(() => {
       this.updateCalendar();
     });
-    this.calendar.stateChanges.subscribe(m => {
+    this.calendar.stateChanges.subscribe(() => {
       this.updateCalendar();
     });
+  }
+
+  refresh() {
+    this.refreshEvents();
+    this.refreshAbsences();
   }
 
   refreshEvents() {
     this.eventService.getAll().subscribe((events) => {
       this.events = events;
+      this.events.forEach(e => {
+        e.startDate = new Date(e.startDate.toLocaleString());
+        e.endDate = new Date(e.endDate.toLocaleString());
+      });
       this.events.forEach(e => e.dateString = HomeComponent.getDateString(e));
       this.events.sort((a, b) => a.startDate > b.startDate ? 1 : a.startDate === b.startDate ? 0 : -1);
+      this.updateCalendar();
+    });
+  }
+
+  refreshAbsences() {
+    this.absenceService.getAll().subscribe((absences) => {
+      this.absences = absences;
+      this.absences.forEach(a => {
+        a.startDate = new Date(a.startDate.toLocaleString());
+        a.endDate = new Date(a.endDate.toLocaleString());
+      });
+      this.absences.forEach(a => a.dateString = HomeComponent.getDateString(a));
+      this.absences.sort((a, b) => a.startDate > b.startDate ? 1 : a.startDate === b.startDate ? 0 : -1);
       this.updateCalendar();
     });
   }
@@ -126,25 +95,89 @@ export class HomeComponent implements OnInit, AfterViewInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.eventService.delete(result as string).subscribe(() => {
+          this.refreshEvents();
+        }, err => {
+          console.log(err);
+        });
+      }
+    });
+  }
+
+  showAbsence(absence: Absence) {
+    const dialogRef = this.dialog.open(AbsenceModalComponent, {
+      width: absence.dateString.length > 50 ? '600px' : absence.dateString.length > 35 ? '550px' :
+        absence.dateString.length > 20 ? '400px' : '300px',
+      data: absence
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.absenceService.delete(result as string).subscribe(() => {
+          this.refreshAbsences();
+        }, err => {
+          console.log(err);
+        });
+      }
+    });
+  }
+
+  private planEventOrAbsence(date: Date) {
+    const dialogRef = this.dialog.open(PlanningModalComponent, {
+      width: '400px',
+      data: {date}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result instanceof Event) {
+        this.addEvent(result as Event);
+      } else if (result instanceof Absence) {
+        this.addAbsence(result as Absence);
+      }
     });
   }
 
   private updateCalendar() {
     setTimeout(() => {
-        const dateElements = document.querySelectorAll('.mat-calendar-body-cell-content');
-        const month = this.calendar.activeDate.getMonth();
-        const year = this.calendar.activeDate.getFullYear();
-        dateElements.forEach(d => {
-          const calendarDate = new Date(year, month, (d.innerHTML as unknown) as number).toDateString();
-          const isDatePlanned = this.events.filter(e => e.startDate.toDateString() === calendarDate ||
-            e.endDate.toDateString() === calendarDate).length > 0;
-          const dateElement = dateElements[(d.innerHTML as unknown) as number - 1];
-          dateElement.classList.remove('available', 'not-available', 'planned');
-          dateElement.classList.add('available');
+      const dateElements = document.querySelectorAll('.mat-calendar-body-cell-content');
+      const month = this.calendar.activeDate.getMonth();
+      const year = this.calendar.activeDate.getFullYear();
+      dateElements.forEach(d => {
+        const calendarDate = new Date(year, month, (d.innerHTML as unknown) as number);
+        const isDateUnavailable = this.absences.filter(a => (a.startDate <= calendarDate &&
+          a.endDate >= calendarDate) || a.startDate.toDateString() === calendarDate.toDateString() ||
+          a.endDate.toDateString() === calendarDate.toDateString()).length > 0;
+        const isDatePlanned = this.events.filter(e => (e.startDate <= calendarDate &&
+          e.endDate >= calendarDate) || e.startDate.toDateString() === calendarDate.toDateString() ||
+          e.endDate.toDateString() === calendarDate.toDateString()).length > 0;
+        const dateElement = dateElements[(d.innerHTML as unknown) as number - 1];
+        dateElement.classList.remove(CLASS_AVAILABLE, CLASS_NOT_AVAILABLE, CLASS_PLANNED);
+        if (isDateUnavailable) {
+          dateElement.classList.add(CLASS_NOT_AVAILABLE);
+        } else {
+          dateElement.classList.add(CLASS_AVAILABLE);
           if (isDatePlanned) {
-            dateElement.classList.add('planned');
+            dateElement.classList.add(CLASS_PLANNED);
           }
-        });
-      }, 1);
+        }
+      });
+    }, 1);
+  }
+
+  private addEvent(event: Event) {
+    this.eventService.add(event).subscribe(() => {
+      this.refreshEvents();
+    }, err => {
+      console.log(err);
+    });
+  }
+
+  private addAbsence(absence: Absence) {
+    this.absenceService.add(absence).subscribe(() => {
+      this.refreshAbsences();
+    }, err => {
+      console.log(err);
+    });
   }
 }

@@ -8,9 +8,9 @@ describe('PlanningModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PlanningModalComponent ]
+      declarations: [PlanningModalComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

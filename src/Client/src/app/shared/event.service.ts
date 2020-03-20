@@ -8,9 +8,18 @@ import { Event } from '../models/event';
 })
 export class EventService {
 
-  constructor(private readonly http: HttpClient) { }
+  constructor(private readonly http: HttpClient) {
+  }
 
   public getAll(): Observable<Event[]> {
     return this.http.get<Event[]>('/api/events');
+  }
+
+  add(event: Event): Observable<string> {
+    return this.http.post<string>('/api/events', event);
+  }
+
+  delete(id: string): Observable<any> {
+    return this.http.delete(`/api/events/${id}`);
   }
 }

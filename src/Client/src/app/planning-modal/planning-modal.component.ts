@@ -1,7 +1,7 @@
-import {Component, Inject, OnInit, ViewEncapsulation} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
-import {Event} from '../models/event';
-import {Absence} from '../models/absence';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { Event } from '../models/event';
+import { Absence } from '../models/absence';
 
 @Component({
   selector: 'app-planning-modal',

@@ -12,8 +12,14 @@
     <div fxLayout="row" fxLayoutAlign="space-between start" style="width: 100%">
       <span fxFlex="25"><b>Anreise:</b></span>
       <span fxFlex="75">{{data.travel}}</span>
+    </div>
   </div>
 </div>
 <div mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">Close</button>
+  <button (click)="onNoClick()" mat-raised-button style="background-color: lightgray;">Schliessen</button>
+  <button (click)="onDeleteClick()" color="primary" mat-raised-button>
+    <span>
+      <mat-icon fontIcon="fa-trash" fontSet="fontawesome"></mat-icon>Löschen
+    </span>
+  </button>
 </div>

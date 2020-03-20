@@ -1,10 +1,10 @@
 <h1 mat-dialog-title>Planen</h1>
 <div mat-dialog-content style="overflow: visible">
   <mat-button-toggle-group>
-    <mat-button-toggle value="event" (click)="setType(true)" checked>
+    <mat-button-toggle (click)="setType(true)" [class.mat-button-toggle-checked]="isEvent" value="event">
       Event
     </mat-button-toggle>
-    <mat-button-toggle value="absence" (click)="setType(false)">
+    <mat-button-toggle (click)="setType(false)" [class.mat-button-toggle-checked]="!isEvent" value="absence">
       Abwesenheit
     </mat-button-toggle>
   </mat-button-toggle-group>
@@ -13,23 +13,23 @@
       <mat-form-field fxFill>
         <mat-label>Von</mat-label>
         <mat-datetimepicker-toggle [for]="datepickerStartdate" matSuffix></mat-datetimepicker-toggle>
-        <mat-datetimepicker #datepickerStartdate type="datetime" openOnFocus="true"
-                            timeInterval="5"></mat-datetimepicker>
-        <input matInput [matDatetimepicker]="datepickerStartdate" name="startDateTime" [(ngModel)]="event.startDate">
+        <mat-datetimepicker #datepickerStartdate openOnFocus="true" timeInterval="5"
+                            type="datetime"></mat-datetimepicker>
+        <input [(ngModel)]="event.startDate" [matDatetimepicker]="datepickerStartdate" matInput name="startDateTime">
       </mat-form-field>
       <mat-form-field fxFill>
         <mat-label>Bis</mat-label>
         <mat-datetimepicker-toggle [for]="datepickerEnddate" matSuffix></mat-datetimepicker-toggle>
-        <mat-datetimepicker #datepickerEnddate type="datetime" openOnFocus="true" timeInterval="5"></mat-datetimepicker>
-        <input matInput [matDatetimepicker]="datepickerEnddate" name="endDateTime" [(ngModel)]="event.endDate">
+        <mat-datetimepicker #datepickerEnddate openOnFocus="true" timeInterval="5" type="datetime"></mat-datetimepicker>
+        <input [(ngModel)]="event.endDate" [matDatetimepicker]="datepickerEnddate" matInput name="endDateTime">
       </mat-form-field>
       <mat-form-field fxFill>
         <mat-label>Ort</mat-label>
-        <input matInput name="location" [(ngModel)]="event.location">
+        <input [(ngModel)]="event.location" matInput name="location">
       </mat-form-field>
       <mat-form-field fxFill>
         <mat-label>Anreise</mat-label>
-        <input matInput name="travel" [(ngModel)]="event.travel">
+        <input [(ngModel)]="event.travel" matInput name="travel">
       </mat-form-field>
     </form>
   </div>
@@ -38,27 +38,27 @@
       <mat-form-field fxFill>
         <mat-label>Von</mat-label>
         <mat-datetimepicker-toggle [for]="datepickerAbsenceStartdate" matSuffix></mat-datetimepicker-toggle>
-        <mat-datetimepicker #datepickerAbsenceStartdate type="datetime" openOnFocus="true"
-                            timeInterval="5"></mat-datetimepicker>
-        <input matInput [matDatetimepicker]="datepickerAbsenceStartdate" name="absenceStartDateTime"
-               [(ngModel)]="absence.startDate">
+        <mat-datetimepicker #datepickerAbsenceStartdate openOnFocus="true" timeInterval="5"
+                            type="datetime"></mat-datetimepicker>
+        <input [(ngModel)]="absence.startDate" [matDatetimepicker]="datepickerAbsenceStartdate" matInput
+               name="absenceStartDateTime">
       </mat-form-field>
       <mat-form-field fxFill>
         <mat-label>Bis</mat-label>
         <mat-datetimepicker-toggle [for]="datepickerAbsenceEnddate" matSuffix></mat-datetimepicker-toggle>
-        <mat-datetimepicker #datepickerAbsenceEnddate type="datetime" openOnFocus="true"
-                            timeInterval="5"></mat-datetimepicker>
-        <input matInput [matDatetimepicker]="datepickerAbsenceEnddate" name="absenceEndDateTime"
-               [(ngModel)]="absence.endDate">
+        <mat-datetimepicker #datepickerAbsenceEnddate openOnFocus="true" timeInterval="5"
+                            type="datetime"></mat-datetimepicker>
+        <input [(ngModel)]="absence.endDate" [matDatetimepicker]="datepickerAbsenceEnddate" matInput
+               name="absenceEndDateTime">
       </mat-form-field>
       <mat-form-field fxFill>
         <mat-label>Abwesenheitsgrund</mat-label>
-        <input matInput name="absenceReason" [(ngModel)]="absence.absenceReason">
+        <input [(ngModel)]="absence.absenceReason" matInput name="absenceReason">
       </mat-form-field>
     </form>
   </div>
   <div mat-dialog-actions>
-    <button mat-raised-button (click)="onNoClick()">Close</button>
-    <button mat-raised-button color="primary" (click)="onSaveClick()">Save</button>
+    <button (click)="onNoClick()" mat-raised-button>Abbrechen</button>
+    <button (click)="onSaveClick()" color="primary" mat-raised-button>Speichern</button>
   </div>
 </div>

@@ -25,7 +25,7 @@ namespace CouplePlanner.Presentation.Controllers
     }
 
     /// <summary>
-    /// Returns all events
+    /// Get all events
     /// </summary>
     /// <returns>List of Events</returns>
     [HttpGet]
@@ -34,6 +34,43 @@ namespace CouplePlanner.Presentation.Controllers
       try
       {
         return Ok(EventApplicationService.GetAll());
+      }
+      catch (Exception)
+      {
+        return BadRequest();
+      }
+    }
+
+    /// <summary>
+    /// Add a new event
+    /// </summary>
+    /// <param name="newEvent">Event to create</param>
+    /// <returns>ID of the created event</returns>
+    [HttpPost]
+    public ActionResult<Guid> Add([FromBody] Event newEvent)
+    {
+      try
+      {
+        return Ok(EventApplicationService.Create(newEvent));
+      }
+      catch (Exception)
+      {
+        return BadRequest();
+      }
+    }
+
+    /// <summary>
+    /// Delete an existing event by ID
+    /// </summary>
+    /// <param name="id">ID of the event to delete</param>
+    /// <returns>StatusCode 204 No Content</returns>
+    [HttpDelete("{id}")]
+    public ActionResult Delete(Guid id)
+    {
+      try
+      {
+        EventApplicationService.Delete(id);
+        return NoContent();
       }
       catch (Exception)
       {

@@ -1,19 +1,31 @@
 <div class="wrapper"
-     fxLayout="row" fxLayoutAlign="space-between start"
-     fxLayoutGap.md="5% grid"
-     fxLayout.lt-md="column" fxLayoutAlign.lt-md="start start">
-  <div fxFlex="50">
-    <h1>Nächste Treffen</h1>
-    <div fxLayout="column" fxLayoutAlign="space-between start" style="width: 80%;">
-      <mat-card fxFill *ngFor="let event of events" ngStyle.lt-md="width: 85%;" (click)="showMeeting(event)">
-        <mat-card-title style="font-size: 140%;" ngStyle.lt-sm="font-size: 120%;">{{event.dateString}}</mat-card-title>
-      </mat-card>
+     fxLayout="row" fxLayout.lt-md="column"
+     fxLayoutAlign="space-between start"
+     fxLayoutAlign.lt-md="start start" fxLayoutGap.md="5% grid">
+  <div fxFlex="50" fxLayout="column">
+    <div>
+      <h1>Nächste Treffen</h1>
+      <div fxLayout="column" fxLayoutAlign="space-between start" style="width: 80%;">
+        <mat-card (click)="showMeeting(event)" *ngFor="let event of events" fxFill ngStyle.lt-md="width: 85%;">
+          <mat-card-title ngStyle.lt-sm="font-size: 120%;"
+                          style="font-size: 140%;">{{event.dateString}}</mat-card-title>
+        </mat-card>
+      </div>
+    </div>
+    <div>
+      <h1>Nächste Abwesenheiten</h1>
+      <div fxLayout="column" fxLayoutAlign="space-between start" style="width: 80%;">
+        <mat-card (click)="showAbsence(absence)" *ngFor="let absence of absences" fxFill ngStyle.lt-md="width: 85%;">
+          <mat-card-title ngStyle.lt-sm="font-size: 120%;"
+                          style="font-size: 140%;">{{absence.dateString}}</mat-card-title>
+        </mat-card>
+      </div>
     </div>
   </div>
   <div fxFlex="50">
     <h1>Planung</h1>
     <div fxLayout="row" fxLayoutAlign="start center">
-      <mat-calendar fxFlex="70" fxFlex.lt-md="90" #calendar></mat-calendar>
+      <mat-calendar #calendar fxFlex="70" fxFlex.lt-md="90"></mat-calendar>
     </div>
   </div>
 </div>
