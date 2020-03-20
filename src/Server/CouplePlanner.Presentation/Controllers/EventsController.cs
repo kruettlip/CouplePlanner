@@ -16,12 +16,12 @@ namespace CouplePlanner.Presentation.Controllers
   {
     public ISchemaProvider SchemaProvider { get; set; }
 
-    public IEventApplicationService EventApplicationService { get; set; }
+    public IApplicationService<Event, Domain.Entities.Event> ApplicationService { get; set; }
 
-    public EventsController(ISchemaProvider schemaProvider, IEventApplicationService eventApplicationService)
+    public EventsController(ISchemaProvider schemaProvider, IApplicationService<Event, Domain.Entities.Event> applicationService)
     {
       SchemaProvider = schemaProvider;
-      EventApplicationService = eventApplicationService;
+      ApplicationService = applicationService;
     }
 
     /// <summary>
@@ -33,7 +33,7 @@ namespace CouplePlanner.Presentation.Controllers
     {
       try
       {
-        return Ok(EventApplicationService.GetAll());
+        return Ok(ApplicationService.GetAll());
       }
       catch (Exception)
       {
@@ -51,7 +51,7 @@ namespace CouplePlanner.Presentation.Controllers
     {
       try
       {
-        return Ok(EventApplicationService.Create(newEvent));
+        return Ok(ApplicationService.Create(newEvent));
       }
       catch (Exception)
       {
@@ -69,7 +69,7 @@ namespace CouplePlanner.Presentation.Controllers
     {
       try
       {
-        EventApplicationService.Delete(id);
+        ApplicationService.Delete(id);
         return NoContent();
       }
       catch (Exception)

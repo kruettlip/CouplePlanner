@@ -30,7 +30,7 @@ namespace CouplePlanner.Application.Mappings
         .ForMember(a => a.StartDate,
           options => options.MapFrom(a => a.StartDate.UtcDateTime))
         .ForMember(a => a.EndDate,
-          options => options.MapFrom(a => a.EndDate.UtcDateTime)); ;
+          options => options.MapFrom(a => a.EndDate.UtcDateTime));
     }
   }
 }

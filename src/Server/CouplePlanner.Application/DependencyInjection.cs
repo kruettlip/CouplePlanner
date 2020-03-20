@@ -1,5 +1,6 @@
 using System.Reflection;
 using AutoMapper;
+using CouplePlanner.Application.Entities;
 using CouplePlanner.Application.Interfaces.Services;
 using CouplePlanner.Application.Schema;
 using CouplePlanner.Application.Services;
@@ -16,8 +17,8 @@ namespace CouplePlanner.Application
       services.AddAutoMapper(Assembly.GetExecutingAssembly());
       services.AddTransient<IJsonSchemaGenerator, JsonSchemaGenerator>();
       services.AddTransient<ISchemaProvider, SchemaProvider>();
-      services.AddTransient<IEventApplicationService, EventApplicationService>();
-      services.AddTransient<IAbsenceApplicationService, AbsenceApplicationService>();
+      services.AddTransient<IApplicationService<Event, Domain.Entities.Event>, ApplicationService<Event, Domain.Entities.Event>>();
+      services.AddTransient<IApplicationService<Absence, Domain.Entities.Absence>, ApplicationService<Absence, Domain.Entities.Absence>>();
     }
 
     public static void AddApplication(this IMvcBuilder mvcBuilder)

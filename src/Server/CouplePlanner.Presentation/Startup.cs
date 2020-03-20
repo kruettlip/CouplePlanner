@@ -42,9 +42,9 @@ namespace CouplePlanner.Presentation
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-    public void Configure(IApplicationBuilder app, IWebHostEnvironment env, CouplePlannerDbContext context)
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env, CouplePlannerDbContext dbContext)
     {
-      context.Database.EnsureCreated();
+      dbContext.Database.EnsureCreated();
 
       if (File.Exists("swagger.json"))
         File.Delete("swagger.json");

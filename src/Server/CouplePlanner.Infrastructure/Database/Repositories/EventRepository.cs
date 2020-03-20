@@ -8,7 +8,7 @@ using CouplePlanner.Infrastructure.Database.Interfaces;
 
 namespace CouplePlanner.Infrastructure.Database.Repositories
 {
-  public class EventRepository : IEventRepository
+  public class EventRepository : IRepository<Event>
   {
     private ICouplePlannerDbContext Db { get; }
 

@@ -1,4 +1,5 @@
 using CouplePlanner.Application.Interfaces.Repositories;
+using CouplePlanner.Domain.Entities;
 using CouplePlanner.Infrastructure.Database;
 using CouplePlanner.Infrastructure.Database.Interfaces;
 using CouplePlanner.Infrastructure.Database.Repositories;
@@ -16,8 +17,8 @@ namespace CouplePlanner.Infrastructure
           options.UseNpgsql("Server=localhost;Port=5432;Database=CouplePlanner;User Id=dev;Password=dev;");
         });
       services.AddScoped<ICouplePlannerDbContext, CouplePlannerDbContext>();
-      services.AddTransient<IEventRepository, EventRepository>();
-      services.AddTransient<IAbsenceRepository, AbsenceRepository>();
+      services.AddTransient<IRepository<Event>, EventRepository>();
+      services.AddTransient<IRepository<Absence>, AbsenceRepository>();
     }
   }
 }

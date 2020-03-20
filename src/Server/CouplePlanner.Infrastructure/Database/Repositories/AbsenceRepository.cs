@@ -8,7 +8,7 @@ using CouplePlanner.Infrastructure.Database.Interfaces;
 
 namespace CouplePlanner.Infrastructure.Database.Repositories
 {
-  public class AbsenceRepository : IAbsenceRepository
+  public class AbsenceRepository : IRepository<Absence>
   {
     private ICouplePlannerDbContext Db { get; }
 

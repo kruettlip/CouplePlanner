@@ -16,12 +16,12 @@ namespace CouplePlanner.Presentation.Controllers
   {
     public ISchemaProvider SchemaProvider { get; set; }
 
-    public IAbsenceApplicationService AbsenceApplicationService { get; set; }
+    public IApplicationService<Absence, Domain.Entities.Absence> ApplicationService { get; set; }
 
-    public AbsencesController(ISchemaProvider schemaProvider, IAbsenceApplicationService absenceApplicationService)
+    public AbsencesController(ISchemaProvider schemaProvider, IApplicationService<Absence, Domain.Entities.Absence> applicationService)
     {
       SchemaProvider = schemaProvider;
-      AbsenceApplicationService = absenceApplicationService;
+      ApplicationService = applicationService;
     }
 
     /// <summary>
@@ -33,7 +33,7 @@ namespace CouplePlanner.Presentation.Controllers
     {
       try
       {
-        return Ok(AbsenceApplicationService.GetAll());
+        return Ok(ApplicationService.GetAll());
       }
       catch (Exception)
       {
@@ -51,7 +51,7 @@ namespace CouplePlanner.Presentation.Controllers
     {
       try
       {
-        return Ok(AbsenceApplicationService.Create(newAbsence));
+        return Ok(ApplicationService.Create(newAbsence));
       }
       catch (Exception)
       {
@@ -69,7 +69,7 @@ namespace CouplePlanner.Presentation.Controllers
     {
       try
       {
-        AbsenceApplicationService.Delete(id);
+        ApplicationService.Delete(id);
         return NoContent();
       }
       catch (Exception)
