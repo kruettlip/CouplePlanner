@@ -2,9 +2,12 @@
   display: none !important;
 }
 
-.mat-datetimepicker-clock {
-  padding-top: 75% !important;
+mat-datetimepicker-clock {
   width: 75% !important;
-  margin-left: auto;
-  margin-right: auto;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.mat-datetimepicker-clock {
+  padding-top: 95% !important;
 }
