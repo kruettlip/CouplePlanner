@@ -1,5 +1,0 @@
----
-applications:
-- name: CouplePlanner
-  random-route: true
-  memory: 512M
