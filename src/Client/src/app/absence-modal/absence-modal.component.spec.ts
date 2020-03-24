@@ -1,4 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatIconModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { AbsenceModalComponent } from './absence-modal.component';
 
@@ -8,9 +9,13 @@ describe('AbsenceModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [AbsenceModalComponent]
-    })
-      .compileComponents();
+      declarations: [AbsenceModalComponent],
+      imports: [MatIconModule],
+      providers: [
+        {provide: MatDialogRef, useValue: {}},
+        {provide: MAT_DIALOG_DATA, useValue: {}}
+        ]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

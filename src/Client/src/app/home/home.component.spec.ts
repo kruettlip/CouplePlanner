@@ -1,4 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { MatCardModule, MatDatepickerModule, MatNativeDateModule } from '@angular/material';
 
 import { HomeComponent } from './home.component';
 
@@ -8,9 +10,15 @@ describe('HomeComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [HomeComponent]
-    })
-      .compileComponents();
+      declarations: [HomeComponent],
+      imports: [
+        MatCardModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        HttpClientTestingModule
+      ],
+      providers: []
+    }).compileComponents();
   }));
 
   beforeEach(() => {
