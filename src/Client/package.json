@@ -5,9 +5,15 @@
     "ng": "ng",
     "start": "ng serve --proxy-config proxy.config.json",
     "build": "ng build",
-    "test": "ng test",
+    "test": "jest",
     "lint": "ng lint",
     "e2e": "ng e2e"
+  },
+  "jest": {
+    "preset": "jest-preset-angular",
+    "setupFilesAfterEnv": [
+      "<rootDir>/setupJest.ts"
+    ]
   },
   "private": true,
   "dependencies": {
@@ -43,6 +49,8 @@
     "codelyzer": "^5.1.2",
     "jasmine-core": "~3.4.0",
     "jasmine-spec-reporter": "~4.2.1",
+    "jest": "^25.1.0",
+    "jest-preset-angular": "^8.1.2",
     "karma": "~4.1.0",
     "karma-chrome-launcher": "~2.2.0",
     "karma-coverage-istanbul-reporter": "~2.0.1",
