@@ -32,8 +32,8 @@ export class HomeComponent implements AfterViewInit {
     data.startDate = new Date(data.startDate);
     data.endDate = new Date(data.endDate);
     let dateString = `${data.startDate.toLocaleDateString('de', {year: 'numeric', month: 'long', day: 'numeric'})}`;
-    const startDateWithoutTime = new Date(data.startDate.getFullYear(), data.startDate.getMonth(), data.startDate.getDay());
-    const endDateWithoutTime = new Date(data.endDate.getFullYear(), data.endDate.getMonth(), data.endDate.getDay());
+    const startDateWithoutTime = new Date(data.startDate.getFullYear(), data.startDate.getMonth(), data.startDate.getDate());
+    const endDateWithoutTime = new Date(data.endDate.getFullYear(), data.endDate.getMonth(), data.endDate.getDate());
     if (startDateWithoutTime < endDateWithoutTime) {
       dateString += ` - ${data.endDate.toLocaleDateString('de', {year: 'numeric', month: 'long', day: 'numeric'})}`;
     }
