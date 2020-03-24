@@ -13,7 +13,11 @@
     "preset": "jest-preset-angular",
     "setupFilesAfterEnv": [
       "<rootDir>/setupJest.ts"
-    ]
+    ],
+    "transform": {
+      "^.+\\.(ts|html)$": "<rootDir>/node_modules/jest-preset-angular/preprocessor.js",
+      "^.+\\.js$": "babel-jest"
+    }
   },
   "private": true,
   "dependencies": {
