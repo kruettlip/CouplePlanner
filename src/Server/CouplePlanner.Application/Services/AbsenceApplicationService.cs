@@ -23,7 +23,9 @@ namespace CouplePlanner.Application.Services
 
     public IEnumerable<Absence> GetUpcoming(int take)
     {
-      var entities = Repository.GetAll(a => a.EndDate >= DateTime.Today.ToUniversalTime()).Take(take);
+      var entities = Repository.GetAll(a => a.EndDate >= DateTime.Today.ToUniversalTime());
+      if (take > 0)
+        entities = entities.Take(take);
       var mappedEntities = entities.Select(a => Mapper.Map<Absence>(a));
       return mappedEntities;
     }

@@ -56,8 +56,8 @@ import { AbsenceModalComponent } from './absence-modal/absence-modal.component';
   ],
   entryComponents: [EventModalComponent, AbsenceModalComponent, PlanningModalComponent],
   providers: [
-    {provide: MAT_DATE_LOCALE, useValue: 'de-CH'},
-    {provide: LOCALE_ID, useValue: 'de-CH'}
+    {provide: MAT_DATE_LOCALE, useValue: 'de-DE'},
+    {provide: LOCALE_ID, useValue: 'de-DE'}
   ],
   bootstrap: [AppComponent]
 })

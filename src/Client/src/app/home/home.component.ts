@@ -75,7 +75,7 @@ export class HomeComponent implements AfterViewInit {
       this.upcomingEvents.sort((a, b) => a.startDate > b.startDate ? 1 : a.startDate === b.startDate ? 0 : -1);
     });
 
-    this.eventService.getAll().subscribe((events) => {
+    this.eventService.getUpcoming(0).subscribe((events) => {
       this.events = events;
       this.events.forEach(e => {
         e.startDate = new Date(e.startDate.toLocaleString());
@@ -96,7 +96,7 @@ export class HomeComponent implements AfterViewInit {
       this.upcomingAbsences.sort((a, b) => a.startDate > b.startDate ? 1 : a.startDate === b.startDate ? 0 : -1);
     });
 
-    this.absenceService.getAll().subscribe((absences) => {
+    this.absenceService.getUpcoming(0).subscribe((absences) => {
       this.absences = absences;
       this.absences.forEach(a => {
         a.startDate = new Date(a.startDate.toLocaleString());
