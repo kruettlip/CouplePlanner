@@ -26,6 +26,7 @@ export class HomeComponent implements AfterViewInit {
   absences: Absence[] = [];
   upcomingAbsences: Absence[] = [];
   upcomingCount = 5;
+  currentDate: Date = new Date();
 
   constructor(private readonly dialog: MatDialog,
               private readonly eventService: EventService,
@@ -61,6 +62,10 @@ export class HomeComponent implements AfterViewInit {
   }
 
   refresh() {
+    const currentDay = new Date().getDate();
+    const currentMonth = new Date().getMonth();
+    const currentYear = new Date().getFullYear();
+    this.currentDate = new Date(currentYear, currentMonth, currentDay);
     this.refreshEvents();
     this.refreshAbsences();
   }
@@ -144,6 +149,9 @@ export class HomeComponent implements AfterViewInit {
   }
 
   private planEventOrAbsence(date: Date) {
+    if (date < this.currentDate) {
+      return;
+    }
     const dialogRef = this.dialog.open(PlanningModalComponent, {
       width: '400px',
       data: {date}
@@ -163,10 +171,6 @@ export class HomeComponent implements AfterViewInit {
       const dateElements = document.querySelectorAll('.mat-calendar-body-cell-content');
       const month = this.calendar.activeDate.getMonth();
       const year = this.calendar.activeDate.getFullYear();
-      const currentDay = new Date().getDate();
-      const currentMonth = new Date().getMonth();
-      const currentYear = new Date().getFullYear();
-      const currentDate = new Date(currentYear, currentMonth, currentDay);
       dateElements.forEach(d => {
         const calendarDate = new Date(year, month, (d.innerHTML as unknown) as number);
         const isDateUnavailable = this.absences.filter(a => (a.startDate <= calendarDate &&
@@ -177,7 +181,7 @@ export class HomeComponent implements AfterViewInit {
           e.endDate.toDateString() === calendarDate.toDateString()).length > 0;
         const dateElement = dateElements[(d.innerHTML as unknown) as number - 1];
         dateElement.classList.remove(CLASS_AVAILABLE, CLASS_NOT_AVAILABLE, CLASS_PLANNED);
-        if (calendarDate >= currentDate) {
+        if (calendarDate >= this.currentDate) {
           if (isDateUnavailable) {
             dateElement.classList.add(CLASS_NOT_AVAILABLE);
           } else {
