@@ -11,6 +11,7 @@ import { AbsenceModalComponent } from '../absence-modal/absence-modal.component'
 const CLASS_AVAILABLE = 'available';
 const CLASS_NOT_AVAILABLE = 'not-available';
 const CLASS_PLANNED = 'planned';
+const CLASS_DISABLED = 'disabled';
 
 @Component({
   selector: 'app-home',
@@ -186,7 +187,7 @@ export class HomeComponent implements AfterViewInit {
             }
           }
         } else {
-          (dateElement as HTMLInputElement).disabled = true;
+          dateElement.classList.add(CLASS_DISABLED);
         }
       });
     }, 1);

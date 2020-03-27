@@ -23,6 +23,14 @@
     }
   }
 
+  &.disabled {
+    background-color: rgb(150, 150, 150) !important;
+    color: rgb(100, 100, 100) !important;
+    &:hover {
+      background-color: rgb(150, 150, 150) !important;
+    }
+  }
+
   &:hover {
     background-color: rgb(196, 196, 196) !important;
   }
