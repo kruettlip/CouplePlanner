@@ -15,6 +15,10 @@ export class EventService {
     return this.http.get<Event[]>('/api/events');
   }
 
+  public getUpcoming(take: number): Observable<Event[]> {
+    return this.http.get<Event[]>(`/api/events/upcoming?take=${take}`);
+  }
+
   add(event: Event): Observable<string> {
     return this.http.post<string>('/api/events', event);
   }

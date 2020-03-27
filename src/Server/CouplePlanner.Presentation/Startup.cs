@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using OpenApi2JsonSchema.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace CouplePlanner.Presentation
@@ -33,7 +34,7 @@ namespace CouplePlanner.Presentation
 
       services.AddSwaggerGen(c =>
       {
-        c.SwaggerDoc("v1", new OpenApiInfo {Title = "CouplePlanner.Server", Version = "v1"});
+        c.SwaggerDoc("v1", new OpenApiInfo { Title = "CouplePlanner.Server", Version = "v1" });
         var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
         var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
         c.IncludeXmlComments(xmlPath);
@@ -46,8 +47,7 @@ namespace CouplePlanner.Presentation
     {
       dbContext.Database.EnsureCreated();
 
-      if (File.Exists("swagger.json"))
-        File.Delete("swagger.json");
+      app.UseOpenApi2JsonSchemaGenerator();
       app.UseSwagger();
 
       if (env.IsDevelopment())

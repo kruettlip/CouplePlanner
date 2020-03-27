@@ -16,9 +16,9 @@ namespace CouplePlanner.Presentation.Controllers
   {
     public ISchemaProvider SchemaProvider { get; set; }
 
-    public IApplicationService<Event, Domain.Entities.Event> ApplicationService { get; set; }
+    public IHappeningApplicationService<Event, Domain.Entities.Event> ApplicationService { get; set; }
 
-    public EventsController(ISchemaProvider schemaProvider, IApplicationService<Event, Domain.Entities.Event> applicationService)
+    public EventsController(ISchemaProvider schemaProvider, IHappeningApplicationService<Event, Domain.Entities.Event> applicationService)
     {
       SchemaProvider = schemaProvider;
       ApplicationService = applicationService;
@@ -34,6 +34,24 @@ namespace CouplePlanner.Presentation.Controllers
       try
       {
         return Ok(ApplicationService.GetAll());
+      }
+      catch (Exception)
+      {
+        return BadRequest();
+      }
+    }
+
+    /// <summary>
+    /// Get upcoming events
+    /// </summary>
+    /// <param name="take">specifies how many upcoming events should be taken (at max)</param>
+    /// <returns>List of upcoming events</returns>
+    [HttpGet("upcoming")]
+    public ActionResult<IEnumerable<Event>> GetUpcoming(int take)
+    {
+      try
+      {
+        return Ok(ApplicationService.GetUpcoming(take));
       }
       catch (Exception)
       {

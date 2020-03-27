@@ -21,7 +21,10 @@ export class HomeComponent implements AfterViewInit {
 
   @ViewChild('calendar') calendar: MatCalendar<Date>;
   events: Event[] = [];
+  upcomingEvents: Event[] = [];
   absences: Absence[] = [];
+  upcomingAbsences: Absence[] = [];
+  upcomingCount = 5;
 
   constructor(private readonly dialog: MatDialog,
               private readonly eventService: EventService,
@@ -62,27 +65,43 @@ export class HomeComponent implements AfterViewInit {
   }
 
   refreshEvents() {
+    this.eventService.getUpcoming(this.upcomingCount).subscribe(upcomingEvents => {
+      this.upcomingEvents = upcomingEvents;
+      this.upcomingEvents.forEach(e => {
+        e.startDate = new Date(e.startDate.toLocaleString());
+        e.endDate = new Date(e.endDate.toLocaleString());
+      });
+      this.upcomingEvents.forEach(e => e.dateString = HomeComponent.getDateString(e));
+      this.upcomingEvents.sort((a, b) => a.startDate > b.startDate ? 1 : a.startDate === b.startDate ? 0 : -1);
+    });
+
     this.eventService.getAll().subscribe((events) => {
       this.events = events;
       this.events.forEach(e => {
         e.startDate = new Date(e.startDate.toLocaleString());
         e.endDate = new Date(e.endDate.toLocaleString());
       });
-      this.events.forEach(e => e.dateString = HomeComponent.getDateString(e));
-      this.events.sort((a, b) => a.startDate > b.startDate ? 1 : a.startDate === b.startDate ? 0 : -1);
       this.updateCalendar();
     });
   }
 
   refreshAbsences() {
+    this.absenceService.getUpcoming(this.upcomingCount).subscribe(upcomingAbsences => {
+      this.upcomingAbsences = upcomingAbsences;
+      this.upcomingAbsences.forEach(a => {
+        a.startDate = new Date(a.startDate.toLocaleString());
+        a.endDate = new Date(a.endDate.toLocaleString());
+      });
+      this.upcomingAbsences.forEach(a => a.dateString = HomeComponent.getDateString(a));
+      this.upcomingAbsences.sort((a, b) => a.startDate > b.startDate ? 1 : a.startDate === b.startDate ? 0 : -1);
+    });
+
     this.absenceService.getAll().subscribe((absences) => {
       this.absences = absences;
       this.absences.forEach(a => {
         a.startDate = new Date(a.startDate.toLocaleString());
         a.endDate = new Date(a.endDate.toLocaleString());
       });
-      this.absences.forEach(a => a.dateString = HomeComponent.getDateString(a));
-      this.absences.sort((a, b) => a.startDate > b.startDate ? 1 : a.startDate === b.startDate ? 0 : -1);
       this.updateCalendar();
     });
   }

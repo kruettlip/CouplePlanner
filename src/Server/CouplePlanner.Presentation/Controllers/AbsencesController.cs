@@ -16,9 +16,9 @@ namespace CouplePlanner.Presentation.Controllers
   {
     public ISchemaProvider SchemaProvider { get; set; }
 
-    public IApplicationService<Absence, Domain.Entities.Absence> ApplicationService { get; set; }
+    public IHappeningApplicationService<Absence, Domain.Entities.Absence> ApplicationService { get; set; }
 
-    public AbsencesController(ISchemaProvider schemaProvider, IApplicationService<Absence, Domain.Entities.Absence> applicationService)
+    public AbsencesController(ISchemaProvider schemaProvider, IHappeningApplicationService<Absence, Domain.Entities.Absence> applicationService)
     {
       SchemaProvider = schemaProvider;
       ApplicationService = applicationService;
@@ -34,6 +34,24 @@ namespace CouplePlanner.Presentation.Controllers
       try
       {
         return Ok(ApplicationService.GetAll());
+      }
+      catch (Exception)
+      {
+        return BadRequest();
+      }
+    }
+
+    /// <summary>
+    /// Get upcoming absences
+    /// </summary>
+    /// <param name="take">specifies how many upcoming absences should be taken (at max)</param>
+    /// <returns>List of upcoming absences</returns>
+    [HttpGet("upcoming")]
+    public ActionResult<IEnumerable<Absence>> GetUpcoming(int take)
+    {
+      try
+      {
+        return Ok(ApplicationService.GetUpcoming(take));
       }
       catch (Exception)
       {

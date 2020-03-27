@@ -15,6 +15,10 @@ export class AbsenceService {
     return this.http.get<Absence[]>('/api/absences');
   }
 
+  public getUpcoming(take: number): Observable<Absence[]> {
+    return this.http.get<Absence[]>(`/api/absences/upcoming?take=${take}`);
+  }
+
   add(absence: Absence): Observable<string> {
     return this.http.post<string>('/api/absences', absence);
   }

@@ -6,7 +6,7 @@
     <div>
       <h1>Nächste Treffen</h1>
       <div fxLayout="column" fxLayoutAlign="space-between start" style="width: 80%;">
-        <mat-card (click)="showMeeting(event)" *ngFor="let event of events" fxFill ngStyle.lt-md="width: 85%;">
+        <mat-card (click)="showMeeting(event)" *ngFor="let event of upcomingEvents" fxFill ngStyle.lt-md="width: 85%;">
           <mat-card-title ngStyle.lt-sm="font-size: 120%;"
                           style="font-size: 140%;">{{event.dateString}}</mat-card-title>
         </mat-card>
@@ -15,7 +15,7 @@
     <div>
       <h1>Nächste Abwesenheiten</h1>
       <div fxLayout="column" fxLayoutAlign="space-between start" style="width: 80%;">
-        <mat-card (click)="showAbsence(absence)" *ngFor="let absence of absences" fxFill ngStyle.lt-md="width: 85%;">
+        <mat-card (click)="showAbsence(absence)" *ngFor="let absence of upcomingAbsences" fxFill ngStyle.lt-md="width: 85%;">
           <mat-card-title ngStyle.lt-sm="font-size: 120%;"
                           style="font-size: 140%;">{{absence.dateString}}</mat-card-title>
         </mat-card>

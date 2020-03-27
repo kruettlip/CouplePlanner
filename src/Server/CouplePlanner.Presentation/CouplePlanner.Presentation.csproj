@@ -18,7 +18,7 @@
     <PackageReference Include="FluentValidation.AspNetCore" Version="8.6.2" />
     <PackageReference Include="MicroElements.Swashbuckle.FluentValidation" Version="3.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
-    <PackageReference Include="OpenAPI2JsonSchema" Version="1.0.0" />
+    <PackageReference Include="OpenAPI2JsonSchema" Version="1.1.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.1.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="5.1.0" />
   </ItemGroup>
