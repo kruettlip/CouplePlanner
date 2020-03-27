@@ -162,6 +162,10 @@ export class HomeComponent implements AfterViewInit {
       const dateElements = document.querySelectorAll('.mat-calendar-body-cell-content');
       const month = this.calendar.activeDate.getMonth();
       const year = this.calendar.activeDate.getFullYear();
+      const currentDay = new Date().getDate();
+      const currentMonth = new Date().getMonth();
+      const currentYear = new Date().getFullYear();
+      const currentDate = new Date(currentYear, currentMonth, currentDay);
       dateElements.forEach(d => {
         const calendarDate = new Date(year, month, (d.innerHTML as unknown) as number);
         const isDateUnavailable = this.absences.filter(a => (a.startDate <= calendarDate &&
@@ -172,13 +176,17 @@ export class HomeComponent implements AfterViewInit {
           e.endDate.toDateString() === calendarDate.toDateString()).length > 0;
         const dateElement = dateElements[(d.innerHTML as unknown) as number - 1];
         dateElement.classList.remove(CLASS_AVAILABLE, CLASS_NOT_AVAILABLE, CLASS_PLANNED);
-        if (isDateUnavailable) {
-          dateElement.classList.add(CLASS_NOT_AVAILABLE);
-        } else {
-          dateElement.classList.add(CLASS_AVAILABLE);
-          if (isDatePlanned) {
-            dateElement.classList.add(CLASS_PLANNED);
+        if (calendarDate >= currentDate) {
+          if (isDateUnavailable) {
+            dateElement.classList.add(CLASS_NOT_AVAILABLE);
+          } else {
+            dateElement.classList.add(CLASS_AVAILABLE);
+            if (isDatePlanned) {
+              dateElement.classList.add(CLASS_PLANNED);
+            }
           }
+        } else {
+          (dateElement as HTMLInputElement).disabled = true;
         }
       });
     }, 1);
