@@ -23,7 +23,7 @@ namespace CouplePlanner.Application.Services
 
     public IEnumerable<Event> GetUpcoming(int take)
     {
-      var entities = Repository.GetAll(e => e.StartDate >= DateTime.Today.ToUniversalTime()).Take(take);
+      var entities = Repository.GetAll(e => e.EndDate >= DateTime.Today.ToUniversalTime()).Take(take);
       var mappedEntities = entities.Select(e => Mapper.Map<Event>(e));
       return mappedEntities;
     }
