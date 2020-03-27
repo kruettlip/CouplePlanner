@@ -3,12 +3,12 @@ using System.Collections.Generic;
 
 namespace CouplePlanner.Application.Interfaces.Services
 {
-  public interface IApplicationService<T, TDomain>
-  {
-    IEnumerable<T> GetAll();
+	public interface IApplicationService<T, TDomain>
+	{
+		IEnumerable<T> GetAll();
 
-    Guid Create(T newEntity);
+		Guid Create(T newEntity);
 
-    void Delete(Guid id);
-  }
+		void Delete(Guid id);
+	}
 }
